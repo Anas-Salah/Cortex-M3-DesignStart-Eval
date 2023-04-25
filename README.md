@@ -1,6 +1,9 @@
 # About Cortex-M3 DesignStart Eval
 
 Cortex-M3 DesignStart Eval is intended for system Verilog design and simulation of a prototype SoC based on the Cortex-M3 processor.
+<p align="center">
+  <img width="720" height="720" src="https://user-images.githubusercontent.com/58098260/234245403-c78431fe-dd40-488d-88a5-0fa38be8b4b6.png">
+</p>
 
 Cortex-M3 DesignStart Eval includes:
 * An ARM Cortex-M3 processor (as obfuscated RTL)
