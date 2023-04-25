@@ -25,3 +25,24 @@ System (MPS2+). This FPGA platform must be purchased separately.
 The RTL system integration can be modified, allowing the user to customize logic surrounding the Cortex-M3
 processor. Subject to the constraints of the FPGA, a modified system can be synthesized to an MPS2+ bitstream
 using the Quartus Prime FPGA design tool (using the free or paid versions of this tool).
+
+# System overview
+The Soft Macro Model (SMM) is an FPGA implementation of an ARM processor or subsystem. The
+SMM is based on the SSE-050 Subsystem. Extra peripherals that are required by the FPGA are placed on
+the expansion of APB and AHB ports.
+
+The following figure shows the block diagram of the FPGA design, indicating the Cortex-M3 processor
+from DesignStart, the CMSDK components (peripherals and interconnect), and the interfaces to the
+MPS2+ platform peripherals.
+
+<p align="center">
+  <img width="720" height="720" src="https://user-images.githubusercontent.com/58098260/234277030-fc686055-8466-4df2-abd6-7a73e8494ac5.png">
+</p>
+
+The example system is designed to be implemented on the ARM Versatile Express Cortex-M Prototyping System (V2M-MPS2+), and comes with a full simulation environment.
+
+The example system is built around the Cortex-M3 processor and the CoreLink SSE-050 Subsystem. In addition to the standard peripherals provided by the MPS2+ board, the example system in Cortex-M3 DesignStart Eval provides the following peripherals:
+
+* Two timers that are dedicated for mbed OS usage.
+* Timers, UART, Watchdog, Real Time Clock (RTC), and True Random Number Generator (TRNG) for application use.
+* SPI interface for microSD card, using the microSD card SPI adapter board.
