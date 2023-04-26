@@ -3,6 +3,8 @@
 //  (C) Copyright 2001-2017 ARM Limited or its affiliates. All rights reserved.
 //
 //The entire notice above must be reproduced on all copies of this file and copies of this file may only be made by a person if such person is permitted to do so under the terms of a subsisting license agreementfrom ARM Limited or its affiliates.
+
+/*
 module dxm_mux_clk (
     in_low,
     in_high,
@@ -15,5 +17,19 @@ module dxm_mux_clk (
    input  [mux_width-1:0]  in_low;
    input  [mux_width-1:0]  in_high;
    output [mux_width-1:0]  out;
+   assign        out = control ? in_high : in_low;
+endmodule
+*/
+module dxm_mux_clk 
+    #( parameter mux_width = 1)
+    (
+   input wire control,
+   input wire [mux_width-1:0]  in_low,
+   input wire [mux_width-1:0]  in_high,
+   output wire [mux_width-1:0]  out
+    );
+ 
+`include "cc_params.inc"    
+
    assign        out = control ? in_high : in_low;
 endmodule
