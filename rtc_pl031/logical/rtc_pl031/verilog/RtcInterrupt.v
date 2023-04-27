@@ -1,7 +1,7 @@
 //  ----------------------------------------------------------------------------
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2022 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -14,7 +14,7 @@
 //  Filename            : RtcInterrupt.v.rca
 //
 //  File Revision       : 1.9
-//
+//      @ Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 //  ----------------------------------------------------------------------------
@@ -28,34 +28,20 @@
 
 module RtcInterrupt (
                    // Inputs
-                     PCLK,
-                     PRESETn,
-                     MatchData,
-                     Count,
-                     IntClear,
-                     RTCIMSC,
-                     RTCIntClr,
-                     RawIntEdge,
-                   // Outputs
-                     RawInt,
-                     MaskInt,
-                     RawIntStatus
+                    input  	wire         PCLK,         // APB clock
+                    input   wire         PRESETn,      // AMBA reset
+                    input   wire [31:0]  MatchData,    // Equivalent match value
+                    input   wire [31:0]  Count,        // Counter
+                    input   wire         IntClear,     //
+                    input   wire         RTCIMSC,      // RTC Interrupt Mask Set/Clear register
+                    input   wire         RTCIntClr,    // Write enable for RTCICR
+                    input 	wire         RawIntEdge,   // Asserted on low-high transition of synchronised
+                                      // raw interrupt.
+                    // outputs								  
+                    output  reg          RawInt,       // Raw interrupt
+                    output  wire         MaskInt,      // RTC interrupt
+                    output  reg          RawIntStatus // Synchronised raw interrupt status
                      );
-
-
-input          PCLK;         // APB clock
-input          PRESETn;      // AMBA reset
-input  [31:0]  MatchData;    // Equivalent match value
-input  [31:0]  Count;        // Counter
-input          IntClear;     //
-input          RTCIMSC;      // RTC Interrupt Mask Set/Clear register
-input          RTCIntClr;    // Write enable for RTCICR
-input          RawIntEdge;   // Asserted on low-high transition of synchronised
-                             // raw interrupt.
-output         RawInt;       // Raw interrupt
-output         MaskInt;      // RTC interrupt
-output         RawIntStatus; // Synchronised raw interrupt status
-
 
 
 //------------------------------------------------------------------------------
@@ -72,15 +58,13 @@ output         RawIntStatus; // Synchronised raw interrupt status
 // -----------------------------------------------------------------------------
 wire     RawIntData;  // Raw interrupt signal gated to IntClear
 wire     IntData;     // Combination interrupt signal
-wire     RawIntEdge;  // Asserted on a low-high transition of synchronised raw
-                      // interrupt
+
 wire     RTCIntClr;   // Write enable for RTCICR
 
 //------------------------------------------------------------------------------
 // Register Declarations
 //------------------------------------------------------------------------------
-reg     RawInt;           // Raw interrupt
-reg     RawIntStatus;     // synchronised raw interrupt status
+
 reg     NextRawIntStatus; // D-input of RawIntStatus
 
 
