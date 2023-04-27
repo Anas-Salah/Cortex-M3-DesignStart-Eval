@@ -1,7 +1,7 @@
 //  --========================================================================--
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2015 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -14,7 +14,7 @@
 //  Filename            : RtcControl.v.rca
 //
 //  File Revision       : 1.9
-//
+//  reviwed by Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 // -----------------------------------------------------------------------------
@@ -27,21 +27,19 @@
 
 module RtcControl(
                 // Inputs
-                  PCLK,
-                  PRESETn,
-                  RTCIntClr,
-                  RawIntSync,
+        input  wire     PCLK,            // APB clock
+        input  wire     PRESETn,         // APB Bus Reset
+        input  wire     RTCIntClr,       // RTC Interrupt Clear signal
+        input  wire     RawIntSync,      // Synchronised raw interrupt
+
                 // Outputs
-                  IntClear
+        output reg      IntClear        // Interrupt clear signal gated to RTCRIS           
                   );
 
 
-input       PCLK;            // APB clock
-input       PRESETn;         // APB Bus Reset
-input       RTCIntClr;       // RTC Interrupt Clear signal
-input       RawIntSync;      // Synchronised raw interrupt
 
-output      IntClear;        // Interrupt clear signal gated to RTCRIS
+
+
 
 
 //------------------------------------------------------------------------------
@@ -69,7 +67,7 @@ output      IntClear;        // Interrupt clear signal gated to RTCRIS
 //------------------------------------------------------------------------------
 // Register Declarations
 //-----------------------------------------------------------------------------
-reg IntClear;       // Gated interrupt clear
+
 reg NextIntClear;   // D-input for IntClear
 
 //------------------------------------------------------------------------------
