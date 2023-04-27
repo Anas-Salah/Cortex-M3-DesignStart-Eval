@@ -1,7 +1,7 @@
 //  ----------------------------------------------------------------------------
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2022 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -14,7 +14,7 @@
 //  Filename            : RtcUpdate.v.rca
 //
 //  File Revision       : 1.10
-//
+//    @ Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 //------------------------------------------------------------------------------
@@ -28,41 +28,23 @@
 
 module RtcUpdate (
                 // Inputs
-                  PCLK,
-                  PRESETn,
-                  nPOR,
-                  CountSync,
-                  RTCMR,
-                  RTCLR,
-                  RTCTOFFSET,
-                  TESTOFFSET,
-                  RTCEn,
-                  WrenRTCLR,
-                  WrenRTCMR,
-                  CountEdge,
-                // Outputs
-                  RtcValue,
-                  Offset,
-                  MatchData
+        input wire         PCLK,           // APB clock
+        input wire         PRESETn,        // AMBA reset
+        input wire         nPOR,           // Power on reset
+        input wire  [31:0] CountSync,      // Synchronised count value
+        input wire  [31:0] RTCMR,          // RTC Match register
+        input wire  [31:0] RTCLR,          // RTC Load register
+        input wire  [31:0] RTCTOFFSET,     // RTC test offset register
+        input wire         TESTOFFSET,     // Test offset enable
+        input wire         RTCEn,          // RTC enable signal
+        input wire         WrenRTCLR,      // Write enable for RTCLR
+        input wire         WrenRTCMR,      // Write enable for RTCMR
+        input wire         CountEdge,      // Counter increment signal
+        // Outputs
+        output reg  [31:0] RtcValue,       // Updated RTC value
+        output reg  [31:0] Offset,         // Calculated offset value
+        output reg  [31:0] MatchData       // Equivalent match value
                   );
-
-
-input         PCLK;           // APB clock
-input         PRESETn;        // AMBA reset
-input         nPOR;           // Power on reset
-input  [31:0] CountSync;      // Synchronised count value
-input  [31:0] RTCMR;          // RTC Match register
-input  [31:0] RTCLR;          // RTC Load register
-input  [31:0] RTCTOFFSET;     // RTC test offset register
-input         TESTOFFSET;     // Test offset enable
-input         RTCEn;          // RTC enable signal
-input         WrenRTCLR;      // Write enable for RTCLR
-input         WrenRTCMR;      // Write enable for RTCMR
-input         CountEdge;      // Counter increment signal
-
-output [31:0] RtcValue;       // Updated RTC value
-output [31:0] Offset;         // Calculated offset value
-output [31:0] MatchData;      // Equivalent match value
 
 
 //------------------------------------------------------------------------------
@@ -98,9 +80,7 @@ reg         Carry;           // Carry signal for adders
 //------------------------------------------------------------------------------
 // Register Declarations
 //------------------------------------------------------------------------------
-reg [31:0] Offset;          // Offset data register
-reg [31:0] RtcValue;        // Value of the Real Time Clock (RTC)
-reg [31:0] MatchData;       // Equivalent match value
+
 reg [31:0] NextOffset;      // D-input of OffsetData
 reg [31:0] NextRtcValue;    // D-input of RtcValue
 reg [31:0] NextMatchData;   // D-input of MatchData
