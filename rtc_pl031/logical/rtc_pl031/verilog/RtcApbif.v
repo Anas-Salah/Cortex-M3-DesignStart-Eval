@@ -14,7 +14,7 @@
 //  Filename            : RtcApbif.v.rca
 //
 //  File Revision       : 1.13
-//
+//  reviwed by Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 //  ----------------------------------------------------------------------------
@@ -28,70 +28,37 @@
 
 module RtcApbif (
                // Inputs
-                 PCLK,
-                 PRESETn,
-                 nPOR,
-                 PSEL,
-                 PENABLE,
-                 PWRITE,
-                 PWDATA,
-                 PADDR,
-                 RTCDR,
-                 RTCRIS,
-                 RTCMIS,
-                 RawIntSync,
-                 MaskInt,
-                 CountSync,
-                 Offset,
-                 Revision,
-               // Outputs
-                 WrenRTCLR,
-                 WrenRTCMR,
-                 RTCMR,
-                 RTCLR,
-                 RTCICR,
-                 RTCIMSC,
-                 RTCEn,
-                 RTCTOFFSET,
-                 RTCTCOUNT,
-                 IntRTCINTR,
-                 TESTCOUNT,
-                 TESTOFFSET,
-                 PRDATA
+                input  wire        PCLK,          // APB Clock
+                input  wire   	   PRESETn,       // APB reset signal
+                input  wire   	   nPOR,          // Power-on-Reset signal
+                input  wire   	   PSEL,          // APB select
+                input  wire   	   PENABLE,       // APB enable
+                input  wire   	   PWRITE,        // APB data bus
+                input  wire [31:0] PWDATA,        // APB Data Bus
+                input  wire [11:2] PADDR,         // APB address bus
+                input  wire [31:0] RTCDR,         // RTC Data Register
+                input  wire        RTCRIS,        // RTC Raw Interrupt Status register
+                input  wire        RTCMIS,        // RTC Masked Interrupt Status register
+                input  wire        RawIntSync,    // Synchronised raw interrupt
+                input  wire        MaskInt,       // RTC interrupt
+                input  wire [31:0] CountSync,     // Synchronised count value
+                input  wire [31:0] Offset,        // Calculated offset value
+                input  wire [3:0]  Revision,      // Revision number
+                //outputs
+                output  wire       WrenRTCLR,     // Write enable for RTCLR
+                output  wire       WrenRTCMR,     // Write enable for RTCMR
+                output  reg [31:0] RTCMR,         // RTC Match Register
+                output  reg [31:0] RTCLR,         // RTC Load Register
+                output  wire       RTCICR,        // RTC Interrupt clear register
+                output  reg        RTCIMSC,       // RTC Interrupt Mask/Set Clear register
+                output  reg [31:0] RTCTOFFSET,    // Test Offset register
+                output  reg [31:0] RTCTCOUNT,     // Test Count register
+                output  wire       RTCEn,         // RTC enable
+                output  wire       IntRTCINTR,    // Rtc Interrupt for integration testing
+                output  wire       TESTCOUNT,     // Test count enable
+                output  wire       TESTOFFSET,    // Test offset enable
+                output  reg [31:0] PRDATA         // APB Read Data
                  );
-
-
-
-input         PCLK;          // APB Clock
-input         PRESETn;       // APB reset signal
-input         nPOR;          // Power-on-Reset signal
-input         PSEL;          // APB select
-input         PENABLE;       // APB enable
-input         PWRITE;        // APB data bus
-input  [31:0] PWDATA;        // APB Data Bus
-input  [11:2] PADDR;         // APB address bus
-input  [31:0] RTCDR;         // RTC Data Register
-input         RTCRIS;        // RTC Raw Interrupt Status register
-input         RTCMIS;        // RTC Masked Interrupt Status register
-input         RawIntSync;    // Synchronised raw interrupt
-input         MaskInt;       // RTC interrupt
-input  [31:0] CountSync;     // Synchronised count value
-input  [31:0] Offset;        // Calculated offset value
-input  [3:0]  Revision;      // Revision number
-
-output        WrenRTCLR;     // Write enable for RTCLR
-output        WrenRTCMR;     // Write enable for RTCMR
-output [31:0] RTCMR;         // RTC Match Register
-output [31:0] RTCLR;         // RTC Load Register
-output        RTCICR;        // RTC Interrupt clear register
-output        RTCIMSC;       // RTC Interrupt Mask/Set Clear register
-output [31:0] RTCTOFFSET;    // Test Offset register
-output [31:0] RTCTCOUNT;     // Test Count register
-output        RTCEn;         // RTC enable
-output        IntRTCINTR;    // Rtc Interrupt for integration testing
-output        TESTCOUNT;     // Test count enable
-output        TESTOFFSET;    // Test offset enable
-output [31:0] PRDATA;        // APB Read Data
 
 
 // -----------------------------------------------------------------------------
@@ -164,9 +131,6 @@ output [31:0] PRDATA;        // APB Read Data
 // In RtcPackage.v
 
 
-// -----------------------------------------------------------------------------
-// Wire declarations
-// -----------------------------------------------------------------------------
 wire [11:2] GatedPADDR;     // Save power by gating PADDR with PSEL
 wire        Wren;           // internal write enable signal
 wire        Rden;           // internal read enable signal
@@ -181,8 +145,6 @@ wire        RdenRTCRIS;     // RTCRIS register read enable
 wire        RdenRTCMIS;     // RTCMIS register read enable
 
 // Write signals for RTC functional mode registers
-wire        WrenRTCMR;      // RTCMR register write enable
-wire        WrenRTCLR;      // RTCLR register write enable
 wire        WrenRTCCR;      // RTCCR register write enable
 wire        WrenRTCIMSC;    // RTCIMSC register write enable
 wire        WrenRTCICR;     // RTCICR register write enable
@@ -221,10 +183,8 @@ wire        ITEN;           // Integration test enable
 // -----------------------------------------------------------------------------
 
 // Local copies of RTC registers
-reg  [31:0] RTCMR;          // RTC Match register
-reg  [31:0] RTCLR;          // RTC Load register
+
 reg         RTCCR;          // RTC Control register
-reg         RTCIMSC;        // RTC Interrupt Mask/Set Clear register
 reg         RTCIntClr;      // RTC Interrupt Clear register
 
 // D-inputs of RTC Functional mode registers
@@ -237,17 +197,13 @@ reg         NextRTCIntClr;  // D-input of RTCIntClr
 // Local copies of RTC Integration test mode registers
 reg [2 :0] RTCITCR;         // RTC Test Control Register
 reg        RTCITOP;         // RTC Integration test output Register
-reg [31:0] RTCTOFFSET;      // RTC Test OFFSET Register
-reg [31:0] RTCTCOUNT;       // RTC Test COUNT Register
+
 
 // D-inputs of RTC Registers
 reg [2 :0] NextRTCITCR;     // D-input of RTCITCR
 reg        NextRTCITOP;     // D-input of RTCITOP
 reg [31:0] NextRTCTOFFSET;  // D-input of RTCTOFFSET
 reg [31:0] NextRTCTCOUNT;   // D-input of RTCTCOUNT
-
-reg  [31:0] PRDATA;         // APB read databus
-
 
 // -----------------------------------------------------------------------------
 //
