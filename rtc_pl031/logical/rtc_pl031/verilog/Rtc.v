@@ -1,7 +1,7 @@
 //  -=========================================================================--
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2015 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -12,7 +12,7 @@
 //
 //
 //  Filename            : Rtc.v.rca
-//
+//  reviewed by Ahmed Abdelazeem
 //  File Revision       : 1.13
 //
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
@@ -26,48 +26,30 @@
 
 
 module Rtc (
-          // Inputs
-            PCLK,
-            PRESETn,
-            PSEL,
-            PENABLE,
-            PWRITE,
-            PADDR,
-            PWDATA,
-            CLK1HZ,
-            nRTCRST,
-            nPOR,
-            SCANENABLE,
-            SCANINPCLK,
-            SCANINCLK1HZ,
-          // Outputs
-            PRDATA,
-            RTCINTR,
-            SCANOUTPCLK,
-            SCANOUTCLK1HZ
+   input wire         PCLK,            // APB clock
+   input wire         PRESETn,         // APB reset
+   input wire         PSEL,            // APB select
+   input wire         PENABLE,         // APB enable
+   input wire         PWRITE,          // APB write
+   input wire [11:2]  PADDR,           // APB Address
+   input wire [31:0]  PWDATA,          // APB write data
+   input wire         CLK1HZ,          // 1 HZ clock
+   input wire         nRTCRST,         // RTC reset signal
+   input wire         nPOR,            // RTC power on reset
+   input wire         SCANENABLE,      // Test mode enable
+   input wire         SCANINPCLK,      // PCLK Scan chain input
+   input wire         SCANINCLK1HZ,    // CLK1HZ Scan chain input
+
+   output        	   SCANOUTPCLK,     // PCLK Scan chain output
+   output        	   SCANOUTCLK1HZ,   // CLK1HZ Scan chain output
+   output [31:0] 	   PRDATA,          // APB  read data
+   output        	   RTCINTR          // RTC interrupt
             );
 
           // Scan test signals not connected until scan insertion
 
 
-input         PCLK;            // APB clock
-input         PRESETn;         // APB reset
-input         PSEL;            // APB select
-input         PENABLE;         // APB enable
-input         PWRITE;          // APB write
-input [11:2]  PADDR;           // APB Address
-input [31:0]  PWDATA;          // APB write data
-input         CLK1HZ;          // 1 HZ clock
-input         nRTCRST;         // RTC reset signal
-input         nPOR;            // RTC power on reset
-input         SCANENABLE;      // Test mode enable
-input         SCANINPCLK;      // PCLK Scan chain input
-input         SCANINCLK1HZ;    // CLK1HZ Scan chain input
 
-output        SCANOUTPCLK;     // PCLK Scan chain output
-output        SCANOUTCLK1HZ;   // CLK1HZ Scan chain output
-output [31:0] PRDATA;          // APB  read data
-output        RTCINTR;         // RTC interrupt
 
 
 // -----------------------------------------------------------------------------
@@ -101,19 +83,6 @@ output        RTCINTR;         // RTC interrupt
 // -----------------------------------------------------------------------------
 // Wire declaration
 // -----------------------------------------------------------------------------
-wire        PCLK;             // APB Clock
-wire        CLK1HZ;           // RTC Clock
-wire        PRESETn;          // APB reset signal
-wire        nRTCRST;          // RTC reset signal
-wire        nPOR;             // RTC power on reset signal
-wire        PSEL;             // APB select
-wire        PENABLE;          // APB enable
-wire        PWRITE;           // APB data bus
-wire [11:2] PADDR;            // APB address bus
-wire [31:0] PWDATA;           // APB Data Bus
-wire        SCANENABLE;       // Scan enable signal
-wire        SCANINPCLK;       // PCLK scan input signal
-wire        SCANINCLK1HZ;     // CLK1HZ scan input signal
 wire [31:0] RTCMR;            // RTC Match Register
 wire [31:0] RTCLR;            // RTCLR Load Register
 wire        RTCIMSC;          // RTC Interrupt Mask/Set Clear register
