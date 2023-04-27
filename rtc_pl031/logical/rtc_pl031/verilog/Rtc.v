@@ -40,10 +40,10 @@ module Rtc (
    input wire         SCANINPCLK,      // PCLK Scan chain input
    input wire         SCANINCLK1HZ,    // CLK1HZ Scan chain input
 
-   output        	   SCANOUTPCLK,     // PCLK Scan chain output
-   output        	   SCANOUTCLK1HZ,   // CLK1HZ Scan chain output
-   output [31:0] 	   PRDATA,          // APB  read data
-   output        	   RTCINTR          // RTC interrupt
+   output wire    	SCANOUTPCLK,     // PCLK Scan chain output
+   output wire   	   SCANOUTCLK1HZ,   // CLK1HZ Scan chain output
+   output wire [31:0] PRDATA,          // APB  read data
+   output wire   	   RTCINTR          // RTC interrupt
             );
 
           // Scan test signals not connected until scan insertion
