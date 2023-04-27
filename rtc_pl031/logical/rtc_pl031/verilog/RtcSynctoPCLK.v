@@ -1,7 +1,7 @@
 //  ----------------------------------------------------------------------------
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2022 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -14,7 +14,7 @@
 //  Filename            : RtcSynctoPCLK.v.rca
 //
 //  File Revision       : 1.10
-//
+//    @Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 //------------------------------------------------------------------------------
@@ -28,34 +28,20 @@
 
 
 module RtcSynctoPCLK (
-                    // Inputs
-                      PCLK,
-                      PRESETn,
-                      nPOR,
-                      RawInt,
-                      MaskInt,
-                      Count,
-                    // Outputs
-                      RawIntSync,
-                      RawIntEdge,
-                      MaskIntStatus,
-                      CountEdge,
-                      CountSync
+         // Inputs
+        input  wire        PCLK,           // APB clock
+        input  wire        PRESETn,        // AMBA reset
+        input  wire        nPOR,           // Power on reset
+        input  wire        RawInt,         // Raw interrupt
+        input  wire        MaskInt,        // Mask interrupt
+        input  wire [31:0] Count,          // Count register
+        // Outputs
+        output reg         RawIntSync,     // Synchronised raw interrupt
+        output wire        RawIntEdge,     // asserted on a low-high transition of RawIntSync
+        output wire        MaskIntStatus,  // Synchronised Mask Interrupt Status
+        output wire        CountEdge,      // Counter incrementer signal
+        output reg [31:0]  CountSync      // Synchronised count
                       );
-
-
-input         PCLK;           // APB clock
-input         PRESETn;        // AMBA reset
-input         nPOR;           // Power on reset
-input         RawInt;         // Raw interrupt
-input         MaskInt;        // Mask interrupt
-input  [31:0] Count;          // Count register
-
-output        RawIntSync;     // Synchronised raw interrupt
-output        RawIntEdge;     // asserted on a low-high transition of RawIntSync
-output        MaskIntStatus;  // Synchronised Mask Interrupt Status
-output        CountEdge;      // Counter incrementer signal
-output [31:0] CountSync;      // Synchronised count
 
 
 //------------------------------------------------------------------------------
@@ -81,8 +67,6 @@ output [31:0] CountSync;      // Synchronised count
 // ----------------------------------------------------------------------------
 // Wire declarations
 // ----------------------------------------------------------------------------
-wire CountEdge;   // asserted after a  rising edge of CLK1HZ
-wire RawIntEdge;  // asserted on a low to high transition of RawIntSync
 
 //------------------------------------------------------------------------------
 // Register Declarations
@@ -90,7 +74,7 @@ wire RawIntEdge;  // asserted on a low to high transition of RawIntSync
 reg [31:0] CountSync;     // Synchronised Count
 reg [31:0] NextCountSync; // D-input of CountSync
 reg RawIntSync1;          // D-input of RawIntSync2, synchronised RawInt
-reg RawIntSync;           // D-input of RawIntSync3
+//reg RawIntSync;           // D-input of RawIntSync3
 reg RawIntSync3;          //
 reg MaskIntSync1;         // D-input of MaskIntSync2
 reg MaskIntSync2;         // synchronised RawInt
