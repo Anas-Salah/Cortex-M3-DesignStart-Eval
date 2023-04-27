@@ -1,7 +1,7 @@
 //  --========================================================================--
 //  This confidential and proprietary software may be used only
 //  as authorised by a licensing agreement from ARM Limited
-//  (C) COPYRIGHT 2001 ARM Limited
+//  (C) COPYRIGHT 2015 ARM Limited
 //  ALL RIGHTS RESERVED
 //  The entire notice above must be reproduced on all authorised copies
 //  and copies may only be made to the extent permitted by a
@@ -14,7 +14,7 @@
 //  Filename            : RtcCounter.v.rca
 //
 //  File Revision       : 1.9
-//
+//  reviwed by Ahmed Abdelazeem
 //  Release Information : PrimeCell(TM)-PL031-REL1v0
 //
 //  ----------------------------------------------------------------------------
@@ -28,21 +28,17 @@
 
 
 module RtcCounter (
-                 // Inputs
-                   CLK1HZ,
-                   nRTCRST,
-                   RTCTCOUNT,
-                   TESTCOUNT,
-                 // Outputs
-                   Count
+      //input
+      input wire    	  CLK1HZ,         // RTC Clock
+      input wire    	  nRTCRST,        // RTC reset
+      input wire [31:0] RTCTCOUNT,      // RTC Test Count register
+      input wire        TESTCOUNT,      // Test count enable
+      //output
+      output reg [31:0] Count           // 32bit Counter
+
+
                    );
 
-input         CLK1HZ;         // RTC Clock
-input         nRTCRST;        // RTC reset
-input  [31:0] RTCTCOUNT;      // RTC Test Count register
-input         TESTCOUNT;      // Test count enable
-
-output [31:0] Count;          // 32bit Counter
 
 
 //------------------------------------------------------------------------------
@@ -67,7 +63,6 @@ output [31:0] Count;          // 32bit Counter
 //------------------------------------------------------------------------------
 // Register Declarations
 //------------------------------------------------------------------------------
-reg [31:0] Count;      // 32bit counter
 reg [31:0] NextCount;  // D-input for counter
 
 //------------------------------------------------------------------------------
