@@ -2,7 +2,8 @@
 //
 //  (C) Copyright 2001-2017 ARM Limited or its affiliates. All rights reserved.
 //
-//The entire notice above must be reproduced on all copies of this file and copies of this file may only be made by a person if such person is permitted to do so under the terms of a subsisting license agreementfrom ARM Limited or its affiliates.
+// The entire notice above must be reproduced on all copies of this file and copies of this file may only be made by a person if such person is permitted to do so under the terms of a subsisting license agreementfrom ARM Limited or its affiliates.
+
 module slave_bus_ifc (
                       rst_n                             ,
                   cc_psel                              ,
